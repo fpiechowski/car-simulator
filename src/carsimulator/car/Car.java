@@ -1,33 +1,49 @@
 package carsimulator.car;
 
-import carsimulator.car.brake.Brake;
 import carsimulator.car.engine.Engine;
 import carsimulator.car.gearbox.Gearbox;
 import carsimulator.car.pedal.Pedal;
-import javafx.beans.property.FloatProperty;
-import javafx.beans.property.SimpleFloatProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Car extends Thread {
-    private int mass = 1000;
-    private FloatProperty speed = new SimpleFloatProperty(0);
-    private FloatProperty acceleration = new SimpleFloatProperty(0);
-
-    private Engine engine = new Engine();
+    public IntegerProperty speedProperty = new SimpleIntegerProperty(0);
     private Pedal accelerationPedal = new Pedal();
     private Pedal brakePedal = new Pedal();
     private Pedal clutchPedal = new Pedal();
     private Gearbox gearbox = new Gearbox();
-    private Brake brake = new Brake();
+    private Engine engine = new Engine(this);
 
-    @Override
-    public void run() {
-        engine.start();
-        while(engine.isRunning()) {
-            updateVelocity();
-        }
+    public Pedal getAccelerationPedal() {
+        return accelerationPedal;
     }
 
-    private void updateVelocity() {
-        // TODO
+    public Pedal getBrakePedal() {
+        return brakePedal;
+    }
+
+    public Pedal getClutchPedal() {
+        return clutchPedal;
+    }
+
+    public Gearbox getGearbox() {
+        return gearbox;
+    }
+
+    public Engine getEngine() {
+        return engine;
+    }
+
+    @Override
+    public void start() {
+        try {
+            engine.ignite();
+            Logger.getGlobal().info("Car started.");
+        } catch (Engine.EngineIgnitionException e) {
+            Logger.getGlobal().warning("Can't ignite engine. " + e.getLocalizedMessage());
+        }
     }
 }
