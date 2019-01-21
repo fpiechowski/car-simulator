@@ -16,7 +16,6 @@ class GearboxPane extends VBox {
     GearboxPane(Gearbox gearbox) {
         setupGearLabel(gearbox);
 
-        setBackground(new Background(new BackgroundFill(Color.PURPLE, null, null)));
         setAlignment(Pos.CENTER);
         setPrefWidth(200);
 

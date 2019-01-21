@@ -25,7 +25,7 @@ public class Pedal {
 
     public void toggleState() {
         if (getState().equals(State.PUSHING)) {
-            setState(State.RELEASING);
+            setState(State.IDLE);
         } else {
             setState(State.PUSHING);
         }

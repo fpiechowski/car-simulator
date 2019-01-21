@@ -1,6 +1,7 @@
 package carsimulator.simulator.scene;
 
 import carsimulator.car.Car;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -43,10 +44,9 @@ class MetricsPane extends GridPane {
     private void setupPane() {
         setAlignment(Pos.CENTER);
         setPrefWidth(400);
-        setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
+        setPadding(new Insets(5));
         setHgap(10);
         setVgap(10);
-        setGridLinesVisible(true);
     }
 
     private void addLabels() {

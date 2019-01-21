@@ -16,7 +16,6 @@ class IgnitionPane extends VBox {
 
     IgnitionPane(Car car) {
         setAlignment(Pos.CENTER);
-        setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
         setPrefWidth(200);
         setSpacing(20);
 

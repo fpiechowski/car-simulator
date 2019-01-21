@@ -51,7 +51,7 @@ public class SimulatorScene extends Scene {
                 case E:
                     car.getAccelerationPedal().setState(Pedal.State.IDLE);
                     break;
-                case SPACE:
+                case Q:
                     car.getBrakePedal().toggleState();
                     taskThread = new Thread(new BrakeTask(car));
                     taskThread.setDaemon(true);

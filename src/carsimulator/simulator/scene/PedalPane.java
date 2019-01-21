@@ -1,6 +1,7 @@
 package carsimulator.simulator.scene;
 
 import carsimulator.car.pedal.Pedal;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -15,7 +16,7 @@ class PedalPane extends HBox {
         bindControls(accelerationPedal, brakePedal);
 
         setAlignment(Pos.CENTER);
-        setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
+        setPadding(new Insets(30));
         setSpacing(50);
 
         getChildren().add(brakePedalLightIndicator);
