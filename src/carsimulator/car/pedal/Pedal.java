@@ -1,18 +1,37 @@
 package carsimulator.car.pedal;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import javafx.beans.property.SimpleObjectProperty;
 
 public class Pedal {
 
-    public BooleanProperty pushedProperty = new SimpleBooleanProperty(false);
+    public ObjectProperty<State> stateProperty = new SimpleObjectProperty<>(State.IDLE);
+    public BooleanProperty activeProperty = new SimpleBooleanProperty(false);
 
-    public void togglePush() {
-        throw new NotImplementedException();
+    public State getState() {
+        return stateProperty.get();
     }
 
-    public boolean isPushed() {
-        return pushedProperty.get();
+    public void setState(State state) {
+        stateProperty.set(state);
+        if (state.equals(State.IDLE)) {
+            activeProperty.set(false);
+        } else {
+            activeProperty.set(true);
+        }
+    }
+
+    public void toggleState() {
+        if (getState().equals(State.PUSHING)) {
+            setState(State.RELEASING);
+        } else {
+            setState(State.PUSHING);
+        }
+    }
+
+    public enum State {
+        PUSHING, RELEASING, IDLE;
     }
 }

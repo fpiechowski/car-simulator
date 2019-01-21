@@ -3,19 +3,28 @@ package carsimulator.car;
 import carsimulator.car.engine.Engine;
 import carsimulator.car.gearbox.Gearbox;
 import carsimulator.car.pedal.Pedal;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+public class Car {
+    public static final int MAX_SPEED = 160;
 
-public class Car extends Thread {
     public IntegerProperty speedProperty = new SimpleIntegerProperty(0);
+    public DoubleProperty speedPercentageProperty = new SimpleDoubleProperty(0);
     private Pedal accelerationPedal = new Pedal();
     private Pedal brakePedal = new Pedal();
-    private Pedal clutchPedal = new Pedal();
-    private Gearbox gearbox = new Gearbox();
+    private Gearbox gearbox = new Gearbox(this);
     private Engine engine = new Engine(this);
+
+    public Car() {
+        speedProperty.addListener((observableValue, oldValue, newValue) -> speedPercentageProperty.set(newValue.doubleValue() / MAX_SPEED));
+
+        Thread speedTaskThread = new Thread(new AdjustSpeedTask(this));
+        speedTaskThread.setDaemon(true);
+        speedTaskThread.start();
+    }
 
     public Pedal getAccelerationPedal() {
         return accelerationPedal;
@@ -23,10 +32,6 @@ public class Car extends Thread {
 
     public Pedal getBrakePedal() {
         return brakePedal;
-    }
-
-    public Pedal getClutchPedal() {
-        return clutchPedal;
     }
 
     public Gearbox getGearbox() {
@@ -37,13 +42,20 @@ public class Car extends Thread {
         return engine;
     }
 
-    @Override
+
+    public int getSpeed() {
+        return speedProperty.get();
+    }
+
+    public synchronized void setSpeed(int speed) {
+        speedProperty.set(speed);
+    }
+
     public void start() {
-        try {
-            engine.ignite();
-            Logger.getGlobal().info("Car started.");
-        } catch (Engine.EngineIgnitionException e) {
-            Logger.getGlobal().warning("Can't ignite engine. " + e.getLocalizedMessage());
-        }
+        engine.ignite();
+    }
+
+    public void stop() {
+        engine.stub();
     }
 }
